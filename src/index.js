@@ -17,9 +17,6 @@ function formatDate(date) {
 
   let currentDay = days[date.getDay()];
   let currentHour = date.getHours();
-  if (currentHour < 10) {
-    currentHour = `0${currentHour} AM`;
-  }
   let currentMinutes = date.getMinutes();
   if (currentMinutes < 10) {
     currentMinutes = `0${currentMinutes}`;
@@ -35,6 +32,7 @@ function formatDate(date) {
 
   return formattedDate;
 }
+
 function showTemp(response) {
   let mainTemp = document.querySelector("#searched-temp");
   let currentTemp = Math.round(response.data.main.temp);
@@ -42,12 +40,47 @@ function showTemp(response) {
   let humidity = document.querySelector("#humidity-value");
   let wind = document.querySelector("#wind-speed");
   let weatherType = document.querySelector("#weather-description");
-
+  let mainIcon = document.querySelector("#main-icon");
+  let iconCode = response.data.weather[0].icon;
   mainTemp.innerHTML = `${currentTemp}°`;
   city.innerHTML = response.data.name;
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = Math.round(response.data.wind.speed);
   weatherType.innerHTML = response.data.weather[0].description;
+
+  if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
+    mainIcon.setAttribute("src", "icons/rainy.svg");
+  } else {
+    if (iconCode === `01d`) {
+      mainIcon.setAttribute("src", "icons/day.svg");
+    } else {
+      if (iconCode === `01n`) {
+        mainIcon.setAttribute("src", "icons/night.svg");
+      } else {
+        if (iconCode === `02d`) {
+          mainIcon.setAttribute("src", "icons.cloudy-day.svg");
+        } else {
+          if (iconCode === `02n`) {
+            mainIcon.setAttribute("src", "icons/cloudy-night.svg");
+          } else {
+            if ([`03d`, `04d`, `03n`, `04n`, `50d`, `50n`].includes(iconCode)) {
+              mainIcon.setAttribute("src", "icons/cloudy.svg");
+            } else {
+              if ([`11d`, `11n`].includes(iconCode)) {
+                mainIcon.setAttribute("src", "icons/thunder.svg");
+              } else {
+                if ([`13d`, `13n`].includes(iconCode)) {
+                  mainIcon.setAttribute("src", "icons/snowy.svg");
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  mainIcon.setAttribute("alt", response.data.weather[0].description);
+  console.log(iconCode);
 }
 
 function searchCity(city) {
