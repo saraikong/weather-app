@@ -17,12 +17,14 @@ ul {
 
 .heading-size {
   font-size: 20px;
+  font-weight: 700;
 }
 
 .current-time {
   font-size: 14px;
   text-align: center;
   padding-left: 20px;
+  padding-left: 0;
 }
 
 .main-weather {
@@ -80,4 +82,8 @@ ul {
 
 #change-temp {
   text-decoration: none;
+}
+
+#weather-description {
+  text-transform: capitalize;
 }
