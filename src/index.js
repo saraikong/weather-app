@@ -4,7 +4,6 @@ let currentCity = document.querySelector("#current-city");
 let searchBar = document.querySelector("#search-city");
 let cityValue = document.querySelector("#city-input");
 let changeTemperature = document.querySelector("#change-temp");
-
 function formatDate(date) {
   let days = [
     "Sunday",
@@ -18,7 +17,20 @@ function formatDate(date) {
 
   let currentDay = days[date.getDay()];
   let currentHour = date.getHours();
+  if (currentHour < 10) {
+    currentHour = `0${currentHour} AM`;
+  }
   let currentMinutes = date.getMinutes();
+  if (currentMinutes < 10) {
+    currentMinutes = `0${currentMinutes}`;
+  }
+  let amPM = document.querySelector("#am-pm");
+  if (currentHour > 12) {
+    amPM.innerHTML = "PM";
+    currentHour = currentHour - 12;
+  } else {
+    amPM.innerHTML = "AM";
+  }
   let formattedDate = `${currentDay} ${currentHour}:${currentMinutes}`;
 
   return formattedDate;
