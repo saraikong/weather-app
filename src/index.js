@@ -4,6 +4,7 @@ let currentCity = document.querySelector("#current-city");
 let searchBar = document.querySelector("#search-city");
 let cityValue = document.querySelector("#city-input");
 let changeTemperature = document.querySelector("#change-temp");
+let farenheitTemperature = null;
 function formatDate(date) {
   let days = [
     "Sunday",
@@ -47,6 +48,7 @@ function showTemp(response) {
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = Math.round(response.data.wind.speed);
   weatherType.innerHTML = response.data.weather[0].description;
+  farenheitTemperature = Math.round(response.data.main.temp);
 
   if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
     mainIcon.setAttribute("src", "icons/rainy.svg");
@@ -103,12 +105,13 @@ function celOrFaren(event) {
   event.preventDefault();
   let temp = document.querySelector("#change-temp");
   let currentTemp = document.querySelector("#searched-temp");
+  let celciusTemperature = ((farenheitTemperature - 32) * 5) / 9;
   if (temp.innerHTML == "F") {
     temp.innerHTML = "C";
-    currentTemp.innerHTML = "60°";
+    currentTemp.innerHTML = Math.round(celciusTemperature) + "°";
   } else {
     temp.innerHTML = "F";
-    currentTemp.innerHTML = "58°";
+    currentTemp.innerHTML = farenheitTemperature + "°";
   }
 }
 
