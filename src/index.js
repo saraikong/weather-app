@@ -135,7 +135,6 @@ function displayForecast(response) {
   forecast.forEach(function (forecastDay, index) {
     if (index < 5) {
       let iconCode = forecastDay.weather[0].icon;
-      console.log(iconCode);
       if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
         iconCode = `icons/rainy.svg`;
       } else {
