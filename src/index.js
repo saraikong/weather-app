@@ -20,7 +20,18 @@ function formatDate(date) {
     amPM.innerHTML = "PM";
     currentHour = currentHour - 12;
   } else {
-    amPM.innerHTML = "AM";
+    if (currentHour === 12) {
+      amPM.innerHTML = "PM";
+    } else {
+      if (currentHour < 12 && currentHour > 0) {
+        amPM.innerHTML = "AM";
+      } else {
+        if (currentHour === 0) {
+          currentHour = currentHour + 12;
+          amPM.innerHTML = "AM";
+        }
+      }
+    }
   }
   let formattedDate = `${currentDay} ${currentHour}:${currentMinutes}`;
 
@@ -31,6 +42,12 @@ function getForecast(coordinates) {
   let apiKey = "50c2acd53349fabd54f52b93c8650d37";
   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayForecast);
+}
+
+function getHourlyForecast(coordinates) {
+  let apiKey = "50c2acd53349fabd54f52b93c8650d37";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
+  axios.get(apiUrl).then(displayHourlyForecast);
 }
 
 function showTemp(response) {
@@ -81,6 +98,7 @@ function showTemp(response) {
   }
   mainIcon.setAttribute("alt", response.data.weather[0].description);
   getForecast(response.data.coord);
+  getHourlyForecast(response.data.coord);
 }
 
 function searchCity(city) {
@@ -185,6 +203,12 @@ function displayForecast(response) {
 
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
+}
+
+function displayHourlyForecast(response) {
+  hourlyForecast = response.data.hourly;
+  console.log(hourlyForecast);
+  let hourlyForecastElement = document.querySelector("#hourly-forecast");
 }
 
 let currentTime = new Date();
