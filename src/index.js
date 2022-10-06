@@ -144,6 +144,14 @@ function formatDay(timestamp) {
   return days[day];
 }
 
+function formatHour(timestamp) {
+  let hour = new Date(timestamp * 1000);
+  let hours = hour.getHours();
+  console.log(hours);
+  console.log(timestamp);
+  return hours;
+}
+
 function displayForecast(response) {
   let forecast = response.data.daily;
 
@@ -207,7 +215,8 @@ function displayForecast(response) {
 
 function displayHourlyForecast(response) {
   hourlyForecast = response.data.hourly;
-  console.log(hourlyForecast);
+
+  console.log(formatHour());
   let hourlyForecastElement = document.querySelector("#hourly-forecast");
 }
 
