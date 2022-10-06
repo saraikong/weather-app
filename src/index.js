@@ -27,6 +27,12 @@ function formatDate(date) {
   return formattedDate;
 }
 
+function getForecast(coordinates) {
+  let apiKey = "50c2acd53349fabd54f52b93c8650d37";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
 function showTemp(response) {
   let mainTemp = document.querySelector("#searched-temp");
   let currentTemp = Math.round(response.data.main.temp);
@@ -75,7 +81,7 @@ function showTemp(response) {
     }
   }
   mainIcon.setAttribute("alt", response.data.weather[0].description);
-  console.log(iconCode);
+  getForecast(response.data.coord);
 }
 
 function searchCity(city) {
@@ -119,6 +125,29 @@ function buttonSelect() {
   }
 
   navigator.geolocation.getCurrentPosition(buttonPosition);
+}
+
+function displayForecast(response) {
+  console.log(response.data.daily);
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<div>`;
+  let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+    <li>
+                  <div class="card-body pt-2 pb-0 mb-n3">
+                    <p class="temperature-days mb-n2">${day}
+                    </p>
+                    <img src="icons/rainy.svg" alt="Sidebar weather icon" class="sidebar-icon icon-style mt-n3">
+                  </div>
+                </li>`;
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
 }
 
 let currentTime = new Date();
