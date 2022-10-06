@@ -1,10 +1,3 @@
-let currentTime = new Date();
-let timeToday = document.querySelector("#time-now");
-let currentCity = document.querySelector("#current-city");
-let searchBar = document.querySelector("#search-city");
-let cityValue = document.querySelector("#city-input");
-let changeTemperature = document.querySelector("#change-temp");
-let farenheitTemperature = null;
 function formatDate(date) {
   let days = [
     "Sunday",
@@ -115,10 +108,6 @@ function celOrFaren(event) {
   }
 }
 
-timeToday.innerHTML = formatDate(currentTime);
-searchBar.addEventListener("submit", handleCity);
-changeTemperature.addEventListener("click", celOrFaren);
-
 function buttonSelect() {
   function buttonPosition(position) {
     let longitude = position.coords.longitude;
@@ -131,6 +120,17 @@ function buttonSelect() {
 
   navigator.geolocation.getCurrentPosition(buttonPosition);
 }
+
+let currentTime = new Date();
+let timeToday = document.querySelector("#time-now");
+let searchBar = document.querySelector("#search-city");
+let changeTemperature = document.querySelector("#change-temp");
+let farenheitTemperature = null;
+
+timeToday.innerHTML = formatDate(currentTime);
+searchBar.addEventListener("submit", handleCity);
+changeTemperature.addEventListener("click", celOrFaren);
+
 let clickMe = document.querySelector("button");
 clickMe.addEventListener("click", buttonSelect);
 
