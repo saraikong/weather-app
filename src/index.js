@@ -47,7 +47,6 @@ function showTemp(response) {
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = Math.round(response.data.wind.speed);
   weatherType.innerHTML = response.data.weather[0].description;
-  farenheitTemperature = Math.round(response.data.main.temp);
 
   if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
     mainIcon.setAttribute("src", "icons/rainy.svg");
@@ -98,20 +97,6 @@ function handleCity(event) {
   let cityValue = document.querySelector("#city-input");
   let city = cityValue.value;
   searchCity(city);
-}
-
-function celOrFaren(event) {
-  event.preventDefault();
-  let temp = document.querySelector("#change-temp");
-  let currentTemp = document.querySelector("#searched-temp");
-  let celciusTemperature = ((farenheitTemperature - 32) * 5) / 9;
-  if (temp.innerHTML == "F") {
-    temp.innerHTML = "C";
-    currentTemp.innerHTML = Math.round(celciusTemperature) + "°";
-  } else {
-    temp.innerHTML = "F";
-    currentTemp.innerHTML = farenheitTemperature + "°";
-  }
 }
 
 function buttonSelect() {
@@ -206,12 +191,9 @@ function displayForecast(response) {
 let currentTime = new Date();
 let timeToday = document.querySelector("#time-now");
 let searchBar = document.querySelector("#search-city");
-let changeTemperature = document.querySelector("#change-temp");
-let farenheitTemperature = null;
 
 timeToday.innerHTML = formatDate(currentTime);
 searchBar.addEventListener("submit", handleCity);
-changeTemperature.addEventListener("click", celOrFaren);
 
 let clickMe = document.querySelector("button");
 clickMe.addEventListener("click", buttonSelect);
