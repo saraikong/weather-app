@@ -149,7 +149,7 @@ function displayForecast(response) {
   // let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   let forecastHTML = `<div>`;
   forecast.forEach(function (forecastDay, index) {
-    if (index < 6 && index > 0) {
+    if (index < 6) {
       let iconCode = forecastDay.weather[0].icon;
       console.log(iconCode);
       if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
