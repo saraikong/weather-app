@@ -142,14 +142,13 @@ function formatDay(timestamp) {
 }
 
 function displayForecast(response) {
-  // console.log(response.data.daily);
   let forecast = response.data.daily;
+
   let forecastElement = document.querySelector("#forecast");
-  let weatherIcon = response.data.daily;
-  // let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
   let forecastHTML = `<div>`;
   forecast.forEach(function (forecastDay, index) {
-    if (index < 6) {
+    if (index < 5) {
       let iconCode = forecastDay.weather[0].icon;
       console.log(iconCode);
       if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
