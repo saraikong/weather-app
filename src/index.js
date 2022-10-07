@@ -260,7 +260,39 @@ function displayHourlyForecast(response) {
         }
       }
       let iconCode = foreCastHourly.weather[0].icon;
-
+      if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
+        iconCode = `icons/rainy.svg`;
+      } else {
+        if (iconCode === `01d`) {
+          iconCode = `icons/day.svg`;
+        } else {
+          if (iconCode === `01n`) {
+            iconCode = `icons/night.svg`;
+          } else {
+            if (iconCode === `02d`) {
+              iconCode = `icons/cloudy-day.svg`;
+            } else {
+              if (iconCode === `02n`) {
+                iconCode = `icons/cloudy-night.svg`;
+              } else {
+                if (
+                  [`03d`, `04d`, `03n`, `04n`, `50d`, `50n`].includes(iconCode)
+                ) {
+                  iconCode = `icons/cloudy.svg`;
+                } else {
+                  if ([`11d`, `11n`].includes(iconCode)) {
+                    iconCode = `icons/thunder.svg`;
+                  } else {
+                    if ([`13d`, `13n`].includes(iconCode)) {
+                      iconCode = `icons/snowy.svg`;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
       // let hourlyTemp = Math.round(hourlyForecast[0].temp);
       hourlyForecastHTML =
         hourlyForecastHTML +
@@ -275,7 +307,7 @@ function displayHourlyForecast(response) {
                       ${Math.round(hourlyForecast[index].temp)}°F
                     </li>
                     <li class="pt-4">
-                      <img src="icons/cloudy-night.svg" alt="Bottom row weather icon"
+                      <img src="${iconCode}" alt="Bottom row weather icon"
                         class="bottom-row-icons icon-style mt-n4 mb-n3 ml-2">
                     </li>
                   </ul>
