@@ -37,18 +37,19 @@ function formatDate(date) {
 
   return formattedDate;
 }
-
+// debugger;
 function getForecast(coordinates) {
   let apiKey = "50c2acd53349fabd54f52b93c8650d37";
   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayForecast);
-}
-
-function getHourlyForecast(coordinates) {
-  let apiKey = "50c2acd53349fabd54f52b93c8650d37";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayHourlyForecast);
 }
+
+// function getHourlyForecast(coordinates) {
+//   let apiKey = "50c2acd53349fabd54f52b93c8650d37";
+//   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
+//   axios.get(apiUrl).then(displayHourlyForecast);
+// }
 
 function showTemp(response) {
   let mainTemp = document.querySelector("#searched-temp");
@@ -98,7 +99,7 @@ function showTemp(response) {
   }
   mainIcon.setAttribute("alt", response.data.weather[0].description);
   getForecast(response.data.coord);
-  getHourlyForecast(response.data.coord);
+  // getHourlyForecast(response.data.coord);
 }
 
 function searchCity(city) {
@@ -145,11 +146,18 @@ function formatDay(timestamp) {
 }
 
 function formatHour(timestamp) {
-  let hour = new Date(timestamp * 1000);
-  let hours = hour.getHours();
-  console.log(hours);
-  console.log(timestamp);
+  let date = new Date(timestamp * 1000);
+  let hours = date.getHours();
+  // console.log(hours);
+  // console.log(timestamp);
   return hours;
+}
+
+function formatMinutes(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let minutes = date.getMinutes();
+  console.log(minutes);
+  return minutes;
 }
 
 function displayForecast(response) {
@@ -214,10 +222,34 @@ function displayForecast(response) {
 }
 
 function displayHourlyForecast(response) {
-  hourlyForecast = response.data.hourly;
+  let hourlyForecast = response.data.hourly;
+  let minutesForecast = response.data.minutely;
 
-  console.log(formatHour());
   let hourlyForecastElement = document.querySelector("#hourly-forecast");
+  // console.log(hourlyForecast[0].dt);
+
+  hourlyForecast.forEach(function (foreCastHourly, index) {
+    let hour = formatHour(foreCastHourly.dt);
+    let newMinutes = formatMinutes(minutesForecast.dt);
+    console.log(newMinutes);
+
+    if (index < 5) {
+      if (hour === 0) {
+        hour = hour + 12 + " AM";
+        // console.log(hour);
+      } else {
+        if (hour < 12) {
+          hour = hour + "  AM";
+          // console.log(hour);
+        } else {
+          if (hour > 12) {
+            hour = hour - 12 + " PM";
+            // console.log(hour);
+          }
+        }
+      }
+    }
+  });
 }
 
 let currentTime = new Date();
