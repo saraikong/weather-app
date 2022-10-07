@@ -120,6 +120,7 @@ function handleCity(event) {
 
 function buttonSelect() {
   function buttonPosition(position) {
+    console.log(position);
     let longitude = position.coords.longitude;
     let latitude = position.coords.latitude;
     let apiKey = "50c2acd53349fabd54f52b93c8650d37";
@@ -156,7 +157,7 @@ function formatHour(timestamp) {
 function formatMinutes(timestamp) {
   let date = new Date(timestamp * 1000);
   let minutes = date.getMinutes();
-  console.log(minutes);
+  // console.log(timestamp);
   return minutes;
 }
 
@@ -224,32 +225,69 @@ function displayForecast(response) {
 function displayHourlyForecast(response) {
   let hourlyForecast = response.data.hourly;
   let minutesForecast = response.data.minutely;
-
+  // console.log(hourlyForecast[0]);
   let hourlyForecastElement = document.querySelector("#hourly-forecast");
-  // console.log(hourlyForecast[0].dt);
 
+  let hourlyForecastHTML = "";
   hourlyForecast.forEach(function (foreCastHourly, index) {
     let hour = formatHour(foreCastHourly.dt);
-    let newMinutes = formatMinutes(minutesForecast.dt);
-    console.log(newMinutes);
+    let newMinutes = formatMinutes(minutesForecast[0].dt);
+    // let hourlyTemp = Math.round(hourlyForecast[index].temp);
+    // console.log(hourlyTemp);
+    if (newMinutes < 10) {
+      newMinutes = "0" + newMinutes;
+    }
+    // console.log(newMinutes);
+    // let hourlyTemp = Math.round(hourlyForecast[0].temp);
 
     if (index < 5) {
       if (hour === 0) {
-        hour = hour + 12 + " AM";
+        hour = hour + 12 + ":" + newMinutes + " AM";
         // console.log(hour);
       } else {
         if (hour < 12) {
-          hour = hour + "  AM";
+          hour = hour + ":" + newMinutes + "  AM";
           // console.log(hour);
         } else {
           if (hour > 12) {
-            hour = hour - 12 + " PM";
+            hour = hour - 12 + ":" + newMinutes + " PM";
             // console.log(hour);
+          } else {
+            if (hour === 12) {
+              hour = hour + ":" + newMinutes + " PM";
+            }
           }
         }
       }
+      let iconCode = foreCastHourly.weather[0].icon;
+
+      // let hourlyTemp = Math.round(hourlyForecast[0].temp);
+      hourlyForecastHTML =
+        hourlyForecastHTML +
+        `<div class="col ">
+              <div class="row ">
+                <div class="col-12">
+                  <ul>
+                    <li>
+                      ${hour}
+                    </li>
+                    <li class="pt-2">
+                      ${Math.round(hourlyForecast[index].temp)}°F
+                    </li>
+                    <li class="pt-4">
+                      <img src="icons/cloudy-night.svg" alt="Bottom row weather icon"
+                        class="bottom-row-icons icon-style mt-n4 mb-n3 ml-2">
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>`;
     }
   });
+  // hourlyForecastHTML = hourlyForecastHTML + `</div>`;
+  // console.log(hourlyForecastHTML);
+  hourlyForecastElement.innerHTML = hourlyForecastHTML;
 }
 
 let currentTime = new Date();
