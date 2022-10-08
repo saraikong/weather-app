@@ -65,6 +65,7 @@ function showTemp(response) {
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = Math.round(response.data.wind.speed);
   weatherType.innerHTML = response.data.weather[0].description;
+  console.log(iconCode);
 
   if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
     mainIcon.setAttribute("src", "icons/rainy.svg");
@@ -260,6 +261,7 @@ function displayHourlyForecast(response) {
         }
       }
       let iconCode = foreCastHourly.weather[0].icon;
+      console.log(iconCode);
       if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
         iconCode = `icons/rainy.svg`;
       } else {
