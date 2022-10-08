@@ -37,19 +37,12 @@ function formatDate(date) {
 
   return formattedDate;
 }
-// debugger;
 function getForecast(coordinates) {
   let apiKey = "50c2acd53349fabd54f52b93c8650d37";
   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
   axios.get(apiUrl).then(displayForecast);
   axios.get(apiUrl).then(displayHourlyForecast);
 }
-
-// function getHourlyForecast(coordinates) {
-//   let apiKey = "50c2acd53349fabd54f52b93c8650d37";
-//   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=imperial`;
-//   axios.get(apiUrl).then(displayHourlyForecast);
-// }
 
 function showTemp(response) {
   let mainTemp = document.querySelector("#searched-temp");
@@ -65,7 +58,7 @@ function showTemp(response) {
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = Math.round(response.data.wind.speed);
   weatherType.innerHTML = response.data.weather[0].description;
-  console.log(iconCode);
+  console.log(response.data.weather[0]);
 
   if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
     mainIcon.setAttribute("src", "icons/rainy.svg");
@@ -98,9 +91,9 @@ function showTemp(response) {
       }
     }
   }
+
   mainIcon.setAttribute("alt", response.data.weather[0].description);
   getForecast(response.data.coord);
-  // getHourlyForecast(response.data.coord);
 }
 
 function searchCity(city) {
@@ -149,16 +142,16 @@ function formatDay(timestamp) {
 
 function formatHour(timestamp) {
   let date = new Date(timestamp * 1000);
+  console.log(date);
   let hours = date.getHours();
-  // console.log(hours);
-  // console.log(timestamp);
+
+  console.log(date.getTimezoneOffset());
   return hours;
 }
 
 function formatMinutes(timestamp) {
   let date = new Date(timestamp * 1000);
   let minutes = date.getMinutes();
-  // console.log(timestamp);
   return minutes;
 }
 
@@ -226,33 +219,25 @@ function displayForecast(response) {
 function displayHourlyForecast(response) {
   let hourlyForecast = response.data.hourly;
   let minutesForecast = response.data.minutely;
-  // console.log(hourlyForecast[0]);
   let hourlyForecastElement = document.querySelector("#hourly-forecast");
 
   let hourlyForecastHTML = "";
   hourlyForecast.forEach(function (foreCastHourly, index) {
     let hour = formatHour(foreCastHourly.dt);
     let newMinutes = formatMinutes(minutesForecast[0].dt);
-    // let hourlyTemp = Math.round(hourlyForecast[index].temp);
-    // console.log(hourlyTemp);
     if (newMinutes < 10) {
       newMinutes = "0" + newMinutes;
     }
-    // console.log(newMinutes);
-    // let hourlyTemp = Math.round(hourlyForecast[0].temp);
 
     if (index < 5) {
       if (hour === 0) {
         hour = hour + 12 + ":" + newMinutes + " AM";
-        // console.log(hour);
       } else {
         if (hour < 12) {
           hour = hour + ":" + newMinutes + "  AM";
-          // console.log(hour);
         } else {
           if (hour > 12) {
             hour = hour - 12 + ":" + newMinutes + " PM";
-            // console.log(hour);
           } else {
             if (hour === 12) {
               hour = hour + ":" + newMinutes + " PM";
@@ -261,7 +246,7 @@ function displayHourlyForecast(response) {
         }
       }
       let iconCode = foreCastHourly.weather[0].icon;
-      console.log(iconCode);
+      console.log(response);
       if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
         iconCode = `icons/rainy.svg`;
       } else {
@@ -295,7 +280,6 @@ function displayHourlyForecast(response) {
           }
         }
       }
-      // let hourlyTemp = Math.round(hourlyForecast[0].temp);
       hourlyForecastHTML =
         hourlyForecastHTML +
         `<div class="col ">
@@ -319,8 +303,6 @@ function displayHourlyForecast(response) {
             </div>`;
     }
   });
-  // hourlyForecastHTML = hourlyForecastHTML + `</div>`;
-  // console.log(hourlyForecastHTML);
   hourlyForecastElement.innerHTML = hourlyForecastHTML;
 }
 
