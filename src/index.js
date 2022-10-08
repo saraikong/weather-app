@@ -58,7 +58,6 @@ function showTemp(response) {
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = Math.round(response.data.wind.speed);
   weatherType.innerHTML = response.data.weather[0].description;
-  console.log(response.data.weather[0]);
 
   if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
     mainIcon.setAttribute("src", "icons/rainy.svg");
@@ -91,7 +90,7 @@ function showTemp(response) {
       }
     }
   }
-
+  timeToday.innerHTML = formatDate(currentTime);
   mainIcon.setAttribute("alt", response.data.weather[0].description);
   getForecast(response.data.coord);
 }
@@ -114,7 +113,6 @@ function handleCity(event) {
 
 function buttonSelect() {
   function buttonPosition(position) {
-    console.log(position);
     let longitude = position.coords.longitude;
     let latitude = position.coords.latitude;
     let apiKey = "50c2acd53349fabd54f52b93c8650d37";
@@ -142,10 +140,8 @@ function formatDay(timestamp) {
 
 function formatHour(timestamp) {
   let date = new Date(timestamp * 1000);
-  console.log(date);
   let hours = date.getHours();
 
-  console.log(date.getTimezoneOffset());
   return hours;
 }
 
@@ -229,7 +225,7 @@ function displayHourlyForecast(response) {
       newMinutes = "0" + newMinutes;
     }
 
-    if (index < 5) {
+    if (index > 0 && index < 6) {
       if (hour === 0) {
         hour = hour + 12 + ":" + newMinutes + " AM";
       } else {
@@ -246,7 +242,6 @@ function displayHourlyForecast(response) {
         }
       }
       let iconCode = foreCastHourly.weather[0].icon;
-      console.log(response);
       if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
         iconCode = `icons/rainy.svg`;
       } else {
@@ -310,7 +305,7 @@ let currentTime = new Date();
 let timeToday = document.querySelector("#time-now");
 let searchBar = document.querySelector("#search-city");
 
-timeToday.innerHTML = formatDate(currentTime);
+// timeToday.innerHTML = formatDate(currentTime);
 searchBar.addEventListener("submit", handleCity);
 
 let clickMe = document.querySelector("button");
