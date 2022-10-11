@@ -44,6 +44,44 @@ function getForecast(coordinates) {
   axios.get(apiUrl).then(displayHourlyForecast);
 }
 
+function changeIcon(iconCode) {
+  let weatherIcon = "";
+
+  if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
+    weatherIcon = "icons/rainy.svg";
+  } else {
+    if (iconCode === `01d`) {
+      weatherIcon = "icons/day.svg";
+    } else {
+      if (iconCode === `01n`) {
+        weatherIcon = "icons/night.svg";
+      } else {
+        if (iconCode === `02d`) {
+          weatherIcon = "icons/cloudy-day.svg";
+        } else {
+          if (iconCode === `02n`) {
+            weatherIcon = "icons/cloudy-night.svg";
+          } else {
+            if ([`03d`, `04d`, `03n`, `04n`, `50d`, `50n`].includes(iconCode)) {
+              weatherIcon = "icons/cloudy.svg";
+            } else {
+              if ([`11d`, `11n`].includes(iconCode)) {
+                weatherIcon = "icons/thunder.svg";
+              } else {
+                if ([`13d`, `13n`].includes(iconCode)) {
+                  weatherIcon = "icons/snowy.svg";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return weatherIcon;
+}
+
 function showTemp(response) {
   let mainTemp = document.querySelector("#searched-temp");
   let currentTemp = Math.round(response.data.main.temp);
@@ -59,37 +97,10 @@ function showTemp(response) {
   wind.innerHTML = Math.round(response.data.wind.speed);
   weatherType.innerHTML = response.data.weather[0].description;
 
-  if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
-    mainIcon.setAttribute("src", "icons/rainy.svg");
-  } else {
-    if (iconCode === `01d`) {
-      mainIcon.setAttribute("src", "icons/day.svg");
-    } else {
-      if (iconCode === `01n`) {
-        mainIcon.setAttribute("src", "icons/night.svg");
-      } else {
-        if (iconCode === `02d`) {
-          mainIcon.setAttribute("src", "icons/cloudy-day.svg");
-        } else {
-          if (iconCode === `02n`) {
-            mainIcon.setAttribute("src", "icons/cloudy-night.svg");
-          } else {
-            if ([`03d`, `04d`, `03n`, `04n`, `50d`, `50n`].includes(iconCode)) {
-              mainIcon.setAttribute("src", "icons/cloudy.svg");
-            } else {
-              if ([`11d`, `11n`].includes(iconCode)) {
-                mainIcon.setAttribute("src", "icons/thunder.svg");
-              } else {
-                if ([`13d`, `13n`].includes(iconCode)) {
-                  mainIcon.setAttribute("src", "icons/snowy.svg");
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  changeIcon(iconCode);
+
+  mainIcon.setAttribute("src", `${changeIcon(iconCode)}`);
+
   timeToday.innerHTML = formatDate(currentTime);
   mainIcon.setAttribute("alt", response.data.weather[0].description);
   getForecast(response.data.coord);
@@ -160,39 +171,7 @@ function displayForecast(response) {
   forecast.forEach(function (forecastDay, index) {
     if (index < 5) {
       let iconCode = forecastDay.weather[0].icon;
-      if ([`09d`, `09n`, `10d`, `10n`].includes(iconCode)) {
-        iconCode = `icons/rainy.svg`;
-      } else {
-        if (iconCode === `01d`) {
-          iconCode = `icons/day.svg`;
-        } else {
-          if (iconCode === `01n`) {
-            iconCode = `icons/night.svg`;
-          } else {
-            if (iconCode === `02d`) {
-              iconCode = `icons/cloudy-day.svg`;
-            } else {
-              if (iconCode === `02n`) {
-                iconCode = `icons/cloudy-night.svg`;
-              } else {
-                if (
-                  [`03d`, `04d`, `03n`, `04n`, `50d`, `50n`].includes(iconCode)
-                ) {
-                  iconCode = `icons/cloudy.svg`;
-                } else {
-                  if ([`11d`, `11n`].includes(iconCode)) {
-                    iconCode = `icons/thunder.svg`;
-                  } else {
-                    if ([`13d`, `13n`].includes(iconCode)) {
-                      iconCode = `icons/snowy.svg`;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+
       forecastHTML =
         forecastHTML +
         `
@@ -202,7 +181,9 @@ function displayForecast(response) {
                       forecastDay.dt
                     )}
                     </p>
-                    <img src="${iconCode}" alt="Sidebar weather icon" class="sidebar-icon icon-style mt-n3">
+                    <img src="${changeIcon(
+                      iconCode
+                    )}" alt="Sidebar weather icon" class="sidebar-icon icon-style mt-n3">
                   </div>
                 </li>`;
     }
