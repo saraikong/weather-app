@@ -14,21 +14,25 @@
 </head>
 
 <body>
-  <div class="container float-md-start">
+  <div class="container">
     <div class="border rounded m-5 shadow wrapper">
       <div class="row">
-        <div class="col ml-5">
+        <div class="col  ml-5 ">
           <div class="row mt-4">
-            <div class="col-6 heading-size">
-              Current Weather in
-              <span id="current-city">
-                Minneapolis, MN</span>
+            <div class="col-md-6">
+              <h1 class="heading-size text-center">
+                Current Weather in
+                <span id="current-city">
+                  Minneapolis, MN</span>
+              </h1>
             </div>
-            <div class="col-2 current-time pt-1">
-              <span id="time-now">
-                9:57</span> <span id="am-pm"> PM </span>
+            <div class="col-md-2 pt-1">
+              <h2 class="current-time text-center">
+                <span id="time-now">
+                  9:57</span> <span id="am-pm"> PM </span>
+              </h2>
             </div>
-            <div class="col-4">
+            <div class="col-md-4">
               <nav class="navbar navbar-light pt-0">
                 <form class="form-inline" id="search-city">
                   <input class="form-control form-control-sm mr-sm-2" type="search" placeholder="Search City"
@@ -42,11 +46,11 @@
             </div>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col-md">
               <span class="main-weather">
                 <div class="pr-5 ">
                   <img src="icons/cloudy-night.svg" alt="Main weather icon"
-                    class="main-icon icon-style border rounded wrapper-three shadow-sm" id="main-icon">
+                    class="main-icon img-fluid icon-style border rounded wrapper-three shadow-sm" id="main-icon">
                 </div>
               </span>
             </div>
